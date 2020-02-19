@@ -1,7 +1,4 @@
 <template>
-  <!-- <div class="timer"> --> <!--v-if="noOfQuestion<=2"-->
-    <!-- {{ timeLeft }} -->
-  <!-- </div> -->
   <div class="base-timer">
     <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
       <g class="base-timer__circle">
@@ -24,6 +21,9 @@
 </template>
 
 <script>
+
+import { mapGetters, mapActions } from 'vuex'
+
 const FULL_DASH_ARRAY = 283
 const WARNING_THRESHOLD = 5
 const ALERT_THRESHOLD = 3
@@ -47,12 +47,16 @@ export default {
   name: 'Timer',
   data () {
     return {
-      timePassed: 0,
-      timerInterval: null,
+      // timePassed: 0,
+      // timerInterval: null,
       noOfQuestion: 1
     }
   },
   computed: {
+    ...mapGetters({
+      timePassed: 'timePassed',
+      timerInterval: 'timerInterval'
+    }),
     timeLeft () {
       return TIME_LIMIT - this.timePassed
     },
@@ -86,24 +90,22 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      startTimer: 'startTimer',
+      stopTimer: 'stopTimer'
+    }),
     onTimesUp () {
       this.stopTimer()
-      // this.noOfQuestion++
-      // if (this.noOfQuestion <= 2) {
-      //   this.startTimer()
-      // } else {
-      //   this.timePassed = 2
-      // }
       this.$emit('timerEnd')
-    },
-    startTimer () {
-      this.stopTimer()
-      this.timePassed = 0
-      this.timerInterval = setInterval(() => (this.timePassed += 1), 1000)
-    },
-    stopTimer () {
-      clearInterval(this.timerInterval)
     }
+    // startTimer () {
+    //   this.stopTimer()
+    //   this.timePassed = 0
+    //   this.timerInterval = setInterval(() => (this.timePassed += 1), 1000)
+    // },
+    // stopTimer () {
+    //   clearInterval(this.timerInterval)
+    // }
   }
 }
 </script>
