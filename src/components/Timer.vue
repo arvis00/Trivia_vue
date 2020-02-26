@@ -1,8 +1,17 @@
 <template>
   <div class="base-timer">
-    <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      class="base-timer__svg"
+      viewBox="0 0 100 100"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <g class="base-timer__circle">
-        <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
+        <circle
+          class="base-timer__path-elapsed"
+          cx="50"
+          cy="50"
+          r="45"
+        ></circle>
         <path
           :stroke-dasharray="circleDasharray"
           class="base-timer__path-remaining"
@@ -21,8 +30,7 @@
 </template>
 
 <script>
-
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from "vuex"
 
 const FULL_DASH_ARRAY = 283
 const WARNING_THRESHOLD = 5
@@ -30,21 +38,21 @@ const ALERT_THRESHOLD = 3
 
 const COLOR_CODES = {
   info: {
-    color: 'green'
+    color: "green"
   },
   warning: {
-    color: 'orange',
+    color: "orange",
     threshold: WARNING_THRESHOLD
   },
   alert: {
-    color: 'red',
+    color: "red",
     threshold: ALERT_THRESHOLD
   }
 }
 
 const TIME_LIMIT = 10
 export default {
-  name: 'Timer',
+  name: "Timer",
   data () {
     return {
       // timePassed: 0,
@@ -54,8 +62,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      timePassed: 'timePassed',
-      timerInterval: 'timerInterval'
+      timePassed: "timePassed",
+      timerInterval: "timerInterval"
     }),
     timeLeft () {
       return TIME_LIMIT - this.timePassed
@@ -91,21 +99,13 @@ export default {
   },
   methods: {
     ...mapActions({
-      startTimer: 'startTimer',
-      stopTimer: 'stopTimer'
+      startTimer: "startTimer",
+      stopTimer: "stopTimer"
     }),
     onTimesUp () {
       this.stopTimer()
-      this.$emit('timerEnd')
+      this.$emit("timerEnd")
     }
-    // startTimer () {
-    //   this.stopTimer()
-    //   this.timePassed = 0
-    //   this.timerInterval = setInterval(() => (this.timePassed += 1), 1000)
-    // },
-    // stopTimer () {
-    //   clearInterval(this.timerInterval)
-    // }
   }
 }
 </script>

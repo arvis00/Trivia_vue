@@ -1,12 +1,8 @@
 <template>
   <div id="app">
-    <!-- <s id="quiz"> -->
-
     <WhiteSpace v-if="!startQuiz">
-
       <Timer @timerEnd="gameOver" />
-      <span v-if="isRequesting&&currentIndex===0">Loading...</span>
-
+      <span v-if="isRequesting && currentIndex === 0">Loading...</span>
       <template v-if="currentQuestion">
         <h5>
           {{ currentQuestion.category }}
@@ -16,15 +12,15 @@
         </h2>
 
         <ul class="listAnswers">
-          <li v-for="(answer,i) in currentAnswers" :key="answer">
+          <li v-for="(answer, i) in currentAnswers" :key="answer">
             <BaseButton
-            class="answer"
-
-            :correct="answer === currentQuestion.correct_answer"
-            :gameOver="gameOverData"
-            :class="{red:i===clickedIndex}"
-            :disabled="disabled"
-            @click="checkAnswer({answer,i})">
+              class="answer"
+              :correct="answer === currentQuestion.correct_answer"
+              :gameOver="gameOverData"
+              :class="{ red: i === clickedIndex }"
+              :disabled="disabled"
+              @click="checkAnswer({ answer, i })"
+            >
               {{ answer }}
             </BaseButton>
           </li>
@@ -38,7 +34,9 @@
       </span>
     </WhiteSpace>
     <WhiteSpace v-if="endQuiz && result === 0">
-      <span class="resultText">"You did not manage to answer a single question correctly!</span>
+      <span class="resultText"
+        >"You did not manage to answer a single question correctly!</span
+      >
     </WhiteSpace>
     <BaseButton class="startButton" v-if="startQuiz" @click="onClick">
       {{ endQuiz ? "CONTINUE PLAYING" : "START PLAYING" }}
@@ -47,37 +45,34 @@
 </template>
 
 <script>
-
-import BaseButton from '@/components/BaseButton'
-import Timer from '@/components/Timer'
-import WhiteSpace from '@/components/WhiteSpace'
-import { mapGetters, mapActions, mapMutations } from 'vuex'
+import BaseButton from "@/components/BaseButton"
+import Timer from "@/components/Timer"
+import WhiteSpace from "@/components/WhiteSpace"
+import { mapGetters, mapActions } from "vuex"
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     BaseButton,
     Timer,
     WhiteSpace
   },
   data () {
-    return {
-
-    }
+    return {}
   },
   computed: {
     ...mapGetters({
-      startQuiz: 'startQuiz',
-      currentIndex: 'currentIndex',
-      isRequesting: 'isRequesting',
-      questions: 'questions',
-      endQuiz: 'endQuiz',
-      result: 'result',
-      clickedIndex: 'clickedIndex',
-      gameOverData: 'gameOverData',
-      disabled: 'disabled',
-      currentQuestion: 'currentQuestion',
-      currentAnswers: 'currentAnswers'
+      startQuiz: "startQuiz",
+      currentIndex: "currentIndex",
+      isRequesting: "isRequesting",
+      questions: "questions",
+      endQuiz: "endQuiz",
+      result: "result",
+      clickedIndex: "clickedIndex",
+      gameOverData: "gameOverData",
+      disabled: "disabled",
+      currentQuestion: "currentQuestion",
+      currentAnswers: "currentAnswers"
     })
     // currentQuestion () {
     //   if (this.questions.length) {
@@ -92,13 +87,12 @@ export default {
   },
   methods: {
     ...mapActions({
-      fetchQuestions: 'fetchQuestions',
-      nextQuestion: 'nextQuestion',
-      onClick: 'onClick',
-      checkAnswer: 'checkAnswer',
-      gameOver: 'gameOver'
-
-    }),
+      fetchQuestions: "fetchQuestions",
+      nextQuestion: "nextQuestion",
+      onClick: "onClick",
+      checkAnswer: "checkAnswer",
+      gameOver: "gameOver"
+    })
     // async fetchQuestions () {
     //   this.isRequesting = true
     //   try {
@@ -164,15 +158,11 @@ export default {
     //   this.endQuiz = !this.endQuiz
     //   this.startQuiz = !this.startQuiz
     // }
-    ...mapMutations({
-      // currentQuestion: 'currentQuestion',
-    })
   }
 }
 </script>
 
 <style>
-
 #app {
   background-color: #7330ac;
   width: 375px;
@@ -184,5 +174,4 @@ export default {
   align-items: center;
   position: relative;
 }
-
 </style>

@@ -1,9 +1,9 @@
-import axios from '@/packages/axios'
-import shuffle from 'lodash.shuffle'
-import Vue from 'vue'
+import axios from "@/packages/axios"
+import shuffle from "lodash.shuffle"
+import Vue from "vue"
 let time = null
 export default {
-  strict: process.env.NODE_ENV === 'development',
+  strict: process.env.NODE_ENV === "development",
   state: () => ({
     currentIndex: 0,
     isRequesting: false,
@@ -14,7 +14,6 @@ export default {
     clickedIndex: null,
     gameOverData: false,
     disabled: false,
-    // timer component
     timePassed: 0,
     timerInterval: null
   }),
@@ -38,7 +37,7 @@ export default {
       return state.result
     },
     clickedIndex: state => {
-      console.log('clickedindex', state.clickedIndex)
+      console.log("clickedindex", state.clickedIndex)
 
       return state.clickedIndex
     },
@@ -55,7 +54,7 @@ export default {
       return state.timerInterval
     },
     currentQuestion (state) {
-      console.log('run')
+      console.log("run")
 
       if (state.questions.length) {
         console.log(state.questions[state.currentIndex])
@@ -69,7 +68,6 @@ export default {
     }
   },
   mutations: {
-
     setOnClick (state) {
       state.startQuiz = !state.startQuiz
       if (state.endQuiz) {
@@ -90,8 +88,8 @@ export default {
       state.isRequesting = status
     },
     increaseIndex (state, payload) {
-      console.log('payload', payload)
-      if (payload === 'currentIndex') {
+      console.log("payload", payload)
+      if (payload === "currentIndex") {
         state.currentIndex += 1
         return
       }
@@ -101,7 +99,7 @@ export default {
       state.questions.shift()
     },
     setClickedIndex (state, i) {
-      console.log('setclickedindex', i)
+      console.log("setclickedindex", i)
 
       state.clickedIndex = i
     },
@@ -120,43 +118,38 @@ export default {
       state.timerInterval = payload
     },
     setTimePassed (state, payload) {
-      payload === 1 ? state.timePassed += 1 : state.timePassed = 0
+      payload === 1 ? (state.timePassed += 1) : (state.timePassed = 0)
     }
   },
   actions: {
-    // currentQuestion ({ commit }) {
-    //   console.log('run')
-
-    //   commit('setCurrentQuestion')
-    // },
     async fetchQuestions ({ commit }) {
-      commit('changeRequesting', true)
+      commit("changeRequesting", true)
       try {
-        const { data } = await axios.get('/api.php?amount=3')
+        const { data } = await axios.get("/api.php?amount=3")
         data.results.forEach(q => {
           q.answers = shuffle([...q.incorrect_answers, q.correct_answer])
         })
-        commit('setQuestions', data)
-        commit('changeRequesting', false)
+        commit("setQuestions", data)
+        commit("changeRequesting", false)
       } catch (error) {
-        commit('changeRequesting', false)
+        commit("changeRequesting", false)
         throw error
       }
     },
     nextQuestion ({ state, dispatch, commit }) {
-      commit('increaseIndex', 'currentIndex')
+      commit("increaseIndex", "currentIndex")
       if ((state.currentIndex + 1) % 2 === 0) {
-        dispatch('fetchQuestions')
-        commit('shiftQuestions')
+        dispatch("fetchQuestions")
+        commit("shiftQuestions")
       }
     },
     async onClick ({ state, dispatch, commit }) {
       if (state.startQuiz) {
-        commit('setOnClick')
+        commit("setOnClick")
         try {
-          await dispatch('fetchQuestions')
+          await dispatch("fetchQuestions")
           Vue.nextTick(() => {
-            dispatch('startTimer')
+            dispatch("startTimer")
           })
         } catch (error) {
           console.error(error)
@@ -164,31 +157,31 @@ export default {
       }
     },
     checkAnswer ({ state, commit, dispatch, getters }, { answer, i }) {
-      console.log('answer', i)
+      console.log("answer", i)
 
       if (answer === getters.currentQuestion.correct_answer) {
-        commit('increaseIndex', 'result')
-        dispatch('nextQuestion')
-        dispatch('startTimer')
+        commit("increaseIndex", "result")
+        dispatch("nextQuestion")
+        dispatch("startTimer")
       } else {
-        commit('setClickedIndex', i)
-        dispatch('stopTimer')
-        commit('setGameOverData')
-        commit('setDisabled')
+        commit("setClickedIndex", i)
+        dispatch("stopTimer")
+        commit("setGameOverData")
+        commit("setDisabled")
         setTimeout(() => {
-          dispatch('gameOver')
+          dispatch("gameOver")
         }, 3000)
       }
     },
     gameOver ({ commit }) {
-      commit('setGameOver')
+      commit("setGameOver")
     },
     // timer component
     startTimer ({ dispatch, commit }) {
-      dispatch('stopTimer')
-      commit('setTimePassed', 0)
-      time = setInterval(() => commit('setTimePassed', 1), 1000)
-      commit('setStartTimer', time)
+      dispatch("stopTimer")
+      commit("setTimePassed", 0)
+      time = setInterval(() => commit("setTimePassed", 1), 1000)
+      commit("setStartTimer", time)
     },
     stopTimer () {
       clearInterval(time)

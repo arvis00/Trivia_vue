@@ -1,17 +1,12 @@
 <template>
-  <button
-:class="correct&&gameOver?'green':''"
-
-  @click="onClick"
-  >
-
+  <button :class="correct && gameOver ? 'green' : ''" @click="onClick">
     <slot />
   </button>
 </template>
 
 <script>
 export default {
-  name: 'BaseButton',
+  name: "BaseButton",
   props: {
     correct: {
       type: Boolean
@@ -23,15 +18,13 @@ export default {
   },
   methods: {
     onClick (event) {
-      this.$emit('click', event)
+      this.$emit("click", event)
     }
   }
 }
-
 </script>
 
 <style>
-
 button:focus {
   outline: 0;
 }
