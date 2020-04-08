@@ -1,5 +1,7 @@
 # trivia
 
+Trivia game written with Vue.js 
+
 ## Project setup
 ```
 npm install
