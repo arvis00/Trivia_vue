@@ -1,4 +1,8 @@
 # trivia
+To run the app:
+- download repo
+- yarn install
+- yarn serve
 
 Trivia game written with Vue.js 
 
